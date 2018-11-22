@@ -1,4 +1,4 @@
-namespace MyCompany.Courses
+namespace MyCompany.Domain.Courses
 {
     public class Teacher
     {

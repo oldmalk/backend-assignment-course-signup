@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MyCompany.Courses;
+using MyCompany.Domain.Courses;
 
 namespace MyCompany.Infrastructure.MongoDb
 {

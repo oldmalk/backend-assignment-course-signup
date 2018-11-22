@@ -2,7 +2,7 @@ using System;
 using Xunit;
 using Moq;
 using FluentAssertions;
-using MyCompany.Courses;
+using MyCompany.Domain.Courses;
 using MyCompany.Application.Courses;
 
 namespace MyCompany.Test.Application

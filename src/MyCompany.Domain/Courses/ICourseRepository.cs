@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MyCompany.Courses
+namespace MyCompany.Domain.Courses
 {
     public interface ICourseRepository
     {

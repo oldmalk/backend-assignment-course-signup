@@ -1,5 +1,5 @@
 using System;
-using MyCompany.Courses;
+using MyCompany.Domain.Courses;
 
 namespace MyCompany.Application.Courses
 {

@@ -1,16 +1,16 @@
 # ADR 0: Title
 
-### Context
+## Context
 Description of the context when the decision was taken.
 
 
-### Decision
+## Decision
 Description of the decision.
 
 
-### Status
+## Status
 Proposed / Accepted / Deprecated
 
 
-### Consequences
+## Consequences
 List of the consequences after the decision was applied.

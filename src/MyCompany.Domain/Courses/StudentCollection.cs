@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace MyCompany.Courses
+namespace MyCompany.Domain.Courses
 {
     public class StudentCollection
     {

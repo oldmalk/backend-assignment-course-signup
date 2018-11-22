@@ -1,6 +1,6 @@
 using System;
 
-namespace MyCompany.Courses
+namespace MyCompany.Domain.Courses
 {
     public class Student
     {
