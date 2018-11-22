@@ -5,13 +5,16 @@ namespace MyCompany.Courses
 {
     public class Course : IAggregationRoot
     {
-        internal Course()
+        public Course(Guid id, Teacher teacher, uint capacity)
         {
+            Id = id;
+            Teacher = teacher;
+            Capacity = capacity;
             Students = new StudentCollection();
         }
 
-        internal Course(Guid id, Teacher teacher, uint capacity, IEnumerable<Student> students)
-            : this()
+        public Course(Guid id, Teacher teacher, uint capacity, IEnumerable<Student> students)
+            : this(id, teacher, capacity)
         {
         }
 
