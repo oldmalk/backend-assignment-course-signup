@@ -1,4 +1,6 @@
-namespace MyCompany.Courses
+using MyCompany.Courses;
+
+namespace MyCompany.Application.Courses
 {
     public class CourseService
     {
@@ -6,6 +8,7 @@ namespace MyCompany.Courses
         
         public CourseService(ICourseRepository courseRepository)
         {
+            _courseRepository = courseRepository;
         }
     }
 }
