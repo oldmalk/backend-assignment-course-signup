@@ -12,6 +12,9 @@ namespace MyCompany.Domain.Courses
 
         internal void Add(Student student)
         {
+            _students.Add(student);
         }
+
+        public int Count() => _students.Count;
     }
 }

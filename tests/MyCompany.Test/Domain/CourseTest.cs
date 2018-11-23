@@ -15,13 +15,14 @@ namespace MyCompany.Test.Domain
             var course = new Course(Guid.NewGuid(), teacher, 10);
             var student = new Student { Name = "Fabio Fugi", Age = 42 };
 
-            uint actualStudentsCount = 0;
+            int actualStudentsCount = 0;
             Exception actualException = null;
 
             // Act
             try
             {
                 course.SignUp(student);
+                actualStudentsCount = course.Students.Count();
             }
             catch (Exception e)
             {
@@ -41,13 +42,14 @@ namespace MyCompany.Test.Domain
             var course = new Course(Guid.NewGuid(), teacher, 0);
             var student = new Student { Name = "Fabio Fugi", Age = 42 };
 
-            uint actualStudentsCount = 0;
+            int actualStudentsCount = 0;
             Exception actualException = null;
 
             // Act
             try
             {
                 course.SignUp(student);
+                actualStudentsCount = course.Students.Count();
             }
             catch (Exception e)
             {

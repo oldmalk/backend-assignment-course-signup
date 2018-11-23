@@ -23,8 +23,16 @@ namespace MyCompany.Domain.Courses
         public uint Capacity { get; }
         public StudentCollection Students { get; }
 
-        public void SignUp(Student student)
+        public int SignUp(Student student)
         {
+            if (!IsSignUpAvailable())
+                throw new InvalidOperationException("It's not possible sign up to a full course.");
+
+            Students.Add(student);
+
+            return Students.Count();
         }
+
+        private bool IsSignUpAvailable() => Students.Count() < Capacity;
     }
 }
