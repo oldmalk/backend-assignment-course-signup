@@ -1,10 +1,11 @@
 using System;
 using System.Threading.Tasks;
+using MyCompany.Application.Courses.Abstractions;
 using MyCompany.Domain.Courses;
 
 namespace MyCompany.Application.Courses
 {
-    public class CourseService
+    public class CourseService : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
 
