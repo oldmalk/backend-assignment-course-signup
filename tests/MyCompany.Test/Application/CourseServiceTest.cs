@@ -4,6 +4,7 @@ using Moq;
 using FluentAssertions;
 using MyCompany.Domain.Courses;
 using MyCompany.Application.Courses;
+using System.Threading.Tasks;
 
 namespace MyCompany.Test.Application
 {
@@ -17,12 +18,14 @@ namespace MyCompany.Test.Application
             _courseRepositoryMock = _mockRepository.Create<ICourseRepository>();
         }
 
-        [Fact]
-        public void SignUp_WhenLimitNotReached_ShouldAddStudent()
+        [Theory]
+        [InlineData(1)] // Tests the exact capacity
+        [InlineData(10)]
+        public async void SignUpAsync_WhenCapacityNotReached_ShouldSignUpStudentAndPersistCourse(uint courseCapacity)
         {
             // Arrange
             var teacher = new Teacher { Name = "Mr. D" };
-            var course = new Course(Guid.NewGuid(), teacher, 10);
+            var course = new Course(Guid.NewGuid(), teacher, courseCapacity);
             var student = new Student { Name = "Fabio Fugi", Age = 42 };
 
             _courseRepositoryMock
@@ -30,23 +33,24 @@ namespace MyCompany.Test.Application
                 .ReturnsAsync(course);
 
             _courseRepositoryMock
-                .Setup(m => m.SaveAsync(It.Is<Course>(it => it.Id == course.Id)));
+                .Setup(m => m.SaveAsync(It.Is<Course>(it => it.Id == course.Id)))
+                .Returns(Task.CompletedTask);
 
             var courseService = new CourseService(_courseRepositoryMock.Object);
 
             // Act
-            courseService.SignUp(course.Id, It.IsAny<Student>());
+            await courseService.SignUpAsync(course.Id, It.IsAny<Student>());
 
             // Assert
             _mockRepository.VerifyAll();
         }
 
         [Fact]
-        public void SignUp_WhenLimitReached_ShouldNotAddStudent()
+        public async void SignUpAsync_WhenCapacityReached_ShouldNotAddStudent()
         {
             // Arrange
             var teacher = new Teacher { Name = "Mr. D" };
-            var course = new Course(Guid.NewGuid(), teacher, 10);
+            var course = new Course(Guid.NewGuid(), teacher, 0);
             var student = new Student { Name = "Fabio Fugi", Age = 42 };
 
             _courseRepositoryMock
@@ -56,7 +60,9 @@ namespace MyCompany.Test.Application
             var courseService = new CourseService(_courseRepositoryMock.Object);
 
             // Act
-            courseService.SignUp(course.Id, It.IsAny<Student>());
+            await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                courseService.SignUpAsync(course.Id, It.IsAny<Student>())
+            );
 
             // Assert
             _mockRepository.VerifyAll();

@@ -17,7 +17,7 @@ namespace MyCompany.Infrastructure.MongoDb
             throw new NotImplementedException();
         }
 
-        public Task<Course> SaveAsync(Course course)
+        public Task SaveAsync(Course course)
         {
             throw new NotImplementedException();
         }

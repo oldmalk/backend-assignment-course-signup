@@ -7,35 +7,27 @@ namespace MyCompany.Test.Domain
 {
     public class CourseTest
     {
-        [Fact]
-        public void SignUp_WhenLimitNotReached_ShouldAddStudent()
+        [Theory]
+        [InlineData(1)] // Tests the exact capacity
+        [InlineData(10)]
+        public void SignUp_WhenCapacityNotReached_ShouldSignUpStudent(uint courseCapacity)
         {
             // Arrange
             var teacher = new Teacher { Name = "Mr. D" };
-            var course = new Course(Guid.NewGuid(), teacher, 10);
+            var course = new Course(Guid.NewGuid(), teacher, courseCapacity);
             var student = new Student { Name = "Fabio Fugi", Age = 42 };
 
             int actualStudentsCount = 0;
-            Exception actualException = null;
 
             // Act
-            try
-            {
-                course.SignUp(student);
-                actualStudentsCount = course.Students.Count();
-            }
-            catch (Exception e)
-            {
-                actualException = e;
-            }
+            actualStudentsCount = course.SignUp(student);
 
             // Assert
             actualStudentsCount.Should().Be(1);
-            actualException.Should().BeNull();
         }
 
         [Fact]
-        public void SignUp_WhenLimitReached_ShouldNotAddStudent()
+        public void SignUp_WhenCapacityReached_ShouldNotSignUpStudent()
         {
             // Arrange
             var teacher = new Teacher { Name = "Mr. D" };
@@ -43,22 +35,14 @@ namespace MyCompany.Test.Domain
             var student = new Student { Name = "Fabio Fugi", Age = 42 };
 
             int actualStudentsCount = 0;
-            Exception actualException = null;
 
             // Act
-            try
-            {
-                course.SignUp(student);
-                actualStudentsCount = course.Students.Count();
-            }
-            catch (Exception e)
-            {
-                actualException = e;
-            }
+            Assert.Throws<InvalidOperationException>(() =>
+                actualStudentsCount = course.SignUp(student)
+            );
 
             // Assert
             actualStudentsCount.Should().Be(0);
-            actualException.Should().NotBeNull();
         }
     }
 }
