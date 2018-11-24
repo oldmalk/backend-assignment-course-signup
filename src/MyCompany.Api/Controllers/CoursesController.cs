@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyCompany.Application.Courses;
-using MyCompany.Application.Courses.Abstractions;
 
 namespace MyCompany.Api.Controllers
 {

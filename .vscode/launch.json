@@ -37,6 +37,21 @@
             }
         },
         {
+            "name": ".NET Core Launch (consumer)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-consumer",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/src/MyCompany.Consumer/bin/Debug/netcoreapp2.1/MyCompany.Consumer.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/MyCompany.Consumer",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach",

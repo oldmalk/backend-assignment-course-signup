@@ -14,12 +14,22 @@ namespace MyCompany.Infrastructure.MongoDb
 
         public Task<Course> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var courseId = new Guid("f2a992fd-1c0e-431c-a585-e41f1a0b5faa");
+            var teacher = new Teacher { Name = "My teacher's name" };
+            var course = new Course(
+                courseId,
+                teacher,
+                capacity: 20
+            );
+
+            return Task.FromResult(course);
         }
 
         public Task SaveAsync(Course course)
         {
-            throw new NotImplementedException();
+            Console.WriteLine($"Course with ID {course.Id} was saved.");
+
+            return Task.CompletedTask;
         }
     }
 }

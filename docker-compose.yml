@@ -27,6 +27,7 @@ services:
     restart: always
     ports:
       - 15672:15672
+      - 5672:5672
     networks:
       - course-net
 

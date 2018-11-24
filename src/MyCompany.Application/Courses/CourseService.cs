@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using MyCompany.Application.Courses.Abstractions;
 using MyCompany.Domain.Courses;
 using MyCompany.Infrastructure.MessageBus;
 
@@ -19,21 +18,13 @@ namespace MyCompany.Application.Courses
 
         public Task EnqueueSignUpAsync(Guid courseId, StudentDto studentDto)
         {
-            var payload = new
-            {
-                CourseId = courseId,
-                studentDto.Name,
-                studentDto.Age
-            };
-            var message = new Message(topic: "course.signup", payload: payload);
-
+            var message = new SignUpMessage(courseId, studentDto);
             return Task.Run(() => _messageBus.Publish(message));
         }
 
         public async Task<CourseDto> GetByIdAsync(Guid courseId)
         {
             var course = await _courseRepository.GetByIdAsync(courseId);
-
             return new CourseDto(course.Id);
         }
 
