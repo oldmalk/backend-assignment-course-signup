@@ -50,7 +50,7 @@ namespace MyCompany.Api.Controllers
         {
             await _courseService.EnqueueSignUpAsync(courseId, student);
 
-            return NoContent();
+            return Accepted();
         }
     }
 }
