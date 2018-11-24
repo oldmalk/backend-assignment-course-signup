@@ -5,7 +5,7 @@ using MyCompany.Domain.Courses;
 
 namespace MyCompany.Infrastructure.MongoDb
 {
-    public class InMemoryCourseRepository : ICourseRepository
+    public class MongoCourseRepository : ICourseRepository
     {
         public Task<IEnumerable<Course>> GetAllAsync()
         {

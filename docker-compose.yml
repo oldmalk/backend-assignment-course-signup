@@ -1,0 +1,35 @@
+version: '3.5'
+
+services:
+  api:
+    build: ./src
+    image: course-api:latest
+    container_name: course-api
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      - course-net
+
+  database:
+    image: mongo:latest
+    container_name: course-database
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - course-net
+
+  message-bus:
+    image: rabbitmq:3-management-alpine
+    hostname: course-message-bus
+    container_name: course-message-bus
+    restart: always
+    ports:
+      - 15672:15672
+    networks:
+      - course-net
+
+networks:
+  course-net:
+    name: course-net
