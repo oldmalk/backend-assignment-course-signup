@@ -33,8 +33,8 @@ namespace MyCompany.Api.Controllers
             return Ok("value");
         }
 
-        // PUT api/courses/{guid}/signup
-        [HttpPut("{courseId:guid}/signup")]
+        // POST api/courses/{guid}/signup
+        [HttpPost("{courseId:guid}/signup")]
         public async Task<IActionResult> SignUpAsync(Guid courseId, [FromBody] StudentDto student)
         {
             await _courseService.SignUpAsync(courseId, student);
