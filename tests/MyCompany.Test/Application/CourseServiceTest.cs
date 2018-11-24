@@ -26,7 +26,7 @@ namespace MyCompany.Test.Application
             // Arrange
             var teacher = new Teacher { Name = "Mr. D" };
             var course = new Course(Guid.NewGuid(), teacher, courseCapacity);
-            var student = new Student { Name = "Fabio Fugi", Age = 42 };
+            var studentDto = new StudentDto { Name = "Fabio Fugi", Age = 42 };
 
             _courseRepositoryMock
                 .Setup(m => m.GetByIdAsync(course.Id))
@@ -39,7 +39,7 @@ namespace MyCompany.Test.Application
             var courseService = new CourseService(_courseRepositoryMock.Object);
 
             // Act
-            await courseService.SignUpAsync(course.Id, It.IsAny<Student>());
+            await courseService.SignUpAsync(course.Id, studentDto);
 
             // Assert
             _mockRepository.VerifyAll();
@@ -51,7 +51,7 @@ namespace MyCompany.Test.Application
             // Arrange
             var teacher = new Teacher { Name = "Mr. D" };
             var course = new Course(Guid.NewGuid(), teacher, 0);
-            var student = new Student { Name = "Fabio Fugi", Age = 42 };
+            var studentDto = new StudentDto { Name = "Fabio Fugi", Age = 42 };
 
             _courseRepositoryMock
                 .Setup(m => m.GetByIdAsync(course.Id))
@@ -61,7 +61,7 @@ namespace MyCompany.Test.Application
 
             // Act
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                courseService.SignUpAsync(course.Id, It.IsAny<Student>())
+                courseService.SignUpAsync(course.Id, studentDto)
             );
 
             // Assert

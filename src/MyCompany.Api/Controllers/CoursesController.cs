@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MyCompany.Application.Courses;
 using MyCompany.Application.Courses.Abstractions;
-using MyCompany.Domain.Courses;
 
 namespace MyCompany.Api.Controllers
 {
@@ -35,7 +35,7 @@ namespace MyCompany.Api.Controllers
 
         // PUT api/courses/{guid}/signup
         [HttpPut("{courseId:guid}/signup")]
-        public async Task<IActionResult> SignUpAsync(Guid courseId, [FromBody] Student student)
+        public async Task<IActionResult> SignUpAsync(Guid courseId, [FromBody] StudentDto student)
         {
             await _courseService.SignUpAsync(courseId, student);
 

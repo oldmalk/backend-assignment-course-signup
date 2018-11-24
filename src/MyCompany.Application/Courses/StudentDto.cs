@@ -1,8 +1,8 @@
 using System;
 
-namespace MyCompany.Domain.Courses
+namespace MyCompany.Application.Courses
 {
-    public class Student
+    public class StudentDto
     {
         public string Name { get; set; }
         public int Age { get; set; }
