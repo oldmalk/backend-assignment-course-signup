@@ -2,16 +2,30 @@ using System;
 using System.Threading.Tasks;
 using MyCompany.Application.Courses.Abstractions;
 using MyCompany.Domain.Courses;
+using MyCompany.Infrastructure.MessageBus;
 
 namespace MyCompany.Application.Courses
 {
     public class CourseService : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
+        private readonly IMessageBus _messageBus;
 
-        public CourseService(ICourseRepository courseRepository)
+        public CourseService(ICourseRepository courseRepository, IMessageBus messageBus)
         {
             _courseRepository = courseRepository;
+            _messageBus = messageBus;
+        }
+
+        public Task EnqueueSignUpAsync(Guid courseId, StudentDto studentDto)
+        {
+            var message = new Message
+            {
+                Topic = "course.signup",
+                Payload = studentDto
+            };
+
+            return Task.Run(() => _messageBus.Publish(message));
         }
 
         public async Task<CourseDto> GetByIdAsync(Guid courseId)

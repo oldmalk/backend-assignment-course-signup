@@ -6,7 +6,8 @@ namespace MyCompany.Application.Courses.Abstractions
 {
     public interface ICourseService
     {
-         Task SignUpAsync(Guid courseId, StudentDto studentDto);
-         Task<CourseDto> GetByIdAsync(Guid courseId);
+        Task SignUpAsync(Guid courseId, StudentDto studentDto);
+        Task EnqueueSignUpAsync(Guid courseId, StudentDto studentDto);
+        Task<CourseDto> GetByIdAsync(Guid courseId);
     }
 }

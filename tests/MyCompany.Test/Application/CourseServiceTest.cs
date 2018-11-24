@@ -1,10 +1,11 @@
 using System;
+using System.Threading.Tasks;
 using Xunit;
 using Moq;
 using FluentAssertions;
 using MyCompany.Domain.Courses;
 using MyCompany.Application.Courses;
-using System.Threading.Tasks;
+using MyCompany.Infrastructure.MessageBus;
 
 namespace MyCompany.Test.Application
 {
@@ -12,10 +13,12 @@ namespace MyCompany.Test.Application
     {
         private readonly MockRepository _mockRepository = new MockRepository(MockBehavior.Strict);
         private readonly Mock<ICourseRepository> _courseRepositoryMock;
+        private readonly Mock<IMessageBus> _messageBusMock;
 
         public CourseServiceTest()
         {
             _courseRepositoryMock = _mockRepository.Create<ICourseRepository>();
+            _messageBusMock = _mockRepository.Create<IMessageBus>();
         }
 
         [Theory]
@@ -36,7 +39,7 @@ namespace MyCompany.Test.Application
                 .Setup(m => m.SaveAsync(It.Is<Course>(it => it.Id == courseStub.Id)))
                 .Returns(Task.CompletedTask);
 
-            var courseService = new CourseService(_courseRepositoryMock.Object);
+            var courseService = new CourseService(_courseRepositoryMock.Object, _messageBusMock.Object);
 
             // Act
             await courseService.SignUpAsync(courseStub.Id, studentDto);
@@ -57,7 +60,7 @@ namespace MyCompany.Test.Application
                 .Setup(m => m.GetByIdAsync(courseStub.Id))
                 .ReturnsAsync(courseStub);
 
-            var courseService = new CourseService(_courseRepositoryMock.Object);
+            var courseService = new CourseService(_courseRepositoryMock.Object, _messageBusMock.Object);
 
             // Act
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
@@ -80,7 +83,7 @@ namespace MyCompany.Test.Application
                 .Setup(m => m.GetByIdAsync(courseStub.Id))
                 .ReturnsAsync(courseStub);
 
-            var courseService = new CourseService(_courseRepositoryMock.Object);
+            var courseService = new CourseService(_courseRepositoryMock.Object, _messageBusMock.Object);
 
             // Act
             var actualCourse = await courseService.GetByIdAsync(courseId);

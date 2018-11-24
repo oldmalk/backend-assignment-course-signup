@@ -43,5 +43,14 @@ namespace MyCompany.Api.Controllers
 
             return NoContent();
         }
+
+        // POST api/v2/courses/{guid}/signup
+        [HttpPost("v2/{courseId:guid}/signup")]
+        public async Task<IActionResult> EnqueueSignUpAsync(Guid courseId, [FromBody] StudentDto student)
+        {
+            await _courseService.EnqueueSignUpAsync(courseId, student);
+
+            return NoContent();
+        }
     }
 }
