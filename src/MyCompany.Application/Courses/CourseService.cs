@@ -19,11 +19,13 @@ namespace MyCompany.Application.Courses
 
         public Task EnqueueSignUpAsync(Guid courseId, StudentDto studentDto)
         {
-            var message = new Message
+            var payload = new
             {
-                Topic = "course.signup",
-                Payload = studentDto
+                CourseId = courseId,
+                studentDto.Name,
+                studentDto.Age
             };
+            var message = new Message(topic: "course.signup", payload: payload);
 
             return Task.Run(() => _messageBus.Publish(message));
         }

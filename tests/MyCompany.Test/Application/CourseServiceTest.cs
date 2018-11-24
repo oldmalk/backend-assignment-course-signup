@@ -92,5 +92,24 @@ namespace MyCompany.Test.Application
             _mockRepository.VerifyAll();
             actualCourse.Id.Should().Be(courseId);
         }
+
+        [Fact]
+        public async void EnqueueSignUpAsync_Always_ShouldPublishMessage()
+        {
+            // Arrange
+            var courseId = Guid.NewGuid();
+            var studentDto = new StudentDto { Name = "Fabio Fugi", Age = 42 };
+
+            _messageBusMock
+                .Setup(m => m.Publish(It.IsAny<Message>()));
+
+            var courseService = new CourseService(_courseRepositoryMock.Object, _messageBusMock.Object);
+
+            // Act
+            await courseService.EnqueueSignUpAsync(courseId, studentDto);
+
+            // Assert
+            _mockRepository.VerifyAll();
+        }
     }
 }
