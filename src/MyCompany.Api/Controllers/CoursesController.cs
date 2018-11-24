@@ -28,9 +28,11 @@ namespace MyCompany.Api.Controllers
 
         // GET api/courses/5
         [HttpGet("{courseId:guid}")]
-        public IActionResult Get(Guid courseId)
+        public async Task<IActionResult> Get(Guid courseId)
         {
-            return Ok("value");
+            var course = await _courseService.GetByIdAsync(courseId);
+
+            return Ok(course);
         }
 
         // POST api/courses/{guid}/signup

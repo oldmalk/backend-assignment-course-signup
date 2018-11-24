@@ -25,21 +25,21 @@ namespace MyCompany.Test.Application
         {
             // Arrange
             var teacher = new Teacher { Name = "Mr. D" };
-            var course = new Course(Guid.NewGuid(), teacher, courseCapacity);
+            var courseStub = new Course(Guid.NewGuid(), teacher, courseCapacity);
             var studentDto = new StudentDto { Name = "Fabio Fugi", Age = 42 };
 
             _courseRepositoryMock
-                .Setup(m => m.GetByIdAsync(course.Id))
-                .ReturnsAsync(course);
+                .Setup(m => m.GetByIdAsync(courseStub.Id))
+                .ReturnsAsync(courseStub);
 
             _courseRepositoryMock
-                .Setup(m => m.SaveAsync(It.Is<Course>(it => it.Id == course.Id)))
+                .Setup(m => m.SaveAsync(It.Is<Course>(it => it.Id == courseStub.Id)))
                 .Returns(Task.CompletedTask);
 
             var courseService = new CourseService(_courseRepositoryMock.Object);
 
             // Act
-            await courseService.SignUpAsync(course.Id, studentDto);
+            await courseService.SignUpAsync(courseStub.Id, studentDto);
 
             // Assert
             _mockRepository.VerifyAll();
@@ -50,22 +50,44 @@ namespace MyCompany.Test.Application
         {
             // Arrange
             var teacher = new Teacher { Name = "Mr. D" };
-            var course = new Course(Guid.NewGuid(), teacher, 0);
+            var courseStub = new Course(Guid.NewGuid(), teacher, 0);
             var studentDto = new StudentDto { Name = "Fabio Fugi", Age = 42 };
 
             _courseRepositoryMock
-                .Setup(m => m.GetByIdAsync(course.Id))
-                .ReturnsAsync(course);
+                .Setup(m => m.GetByIdAsync(courseStub.Id))
+                .ReturnsAsync(courseStub);
 
             var courseService = new CourseService(_courseRepositoryMock.Object);
 
             // Act
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                courseService.SignUpAsync(course.Id, studentDto)
+                courseService.SignUpAsync(courseStub.Id, studentDto)
             );
 
             // Assert
             _mockRepository.VerifyAll();
+        }
+
+        [Fact]
+        public async void GetByIdAsync_WhenCourseExists_ShouldReturnEntity()
+        {
+            // Arrange
+            var courseId = Guid.NewGuid();
+            var teacher = new Teacher { Name = "Mr. D" };
+            var courseStub = new Course(courseId, teacher, 10);
+
+            _courseRepositoryMock
+                .Setup(m => m.GetByIdAsync(courseStub.Id))
+                .ReturnsAsync(courseStub);
+
+            var courseService = new CourseService(_courseRepositoryMock.Object);
+
+            // Act
+            var actualCourse = await courseService.GetByIdAsync(courseId);
+
+            // Assert
+            _mockRepository.VerifyAll();
+            actualCourse.Id.Should().Be(courseId);
         }
     }
 }

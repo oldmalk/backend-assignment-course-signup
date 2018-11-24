@@ -14,6 +14,13 @@ namespace MyCompany.Application.Courses
             _courseRepository = courseRepository;
         }
 
+        public async Task<CourseDto> GetByIdAsync(Guid courseId)
+        {
+            var course = await _courseRepository.GetByIdAsync(courseId);
+
+            return new CourseDto(course.Id);
+        }
+
         public async Task SignUpAsync(Guid courseId, StudentDto studentDto)
         {
             var course = await _courseRepository.GetByIdAsync(courseId);
