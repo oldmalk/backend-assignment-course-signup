@@ -26,10 +26,12 @@ It creates three containers:
 * MongoDB (Not implemented)
     * Better scalability than SQL databases
     * Works better with eventual consistence scenarios
+    * In cloud scenario, I probably would use a service like CosmosDB.
 
 * RabbitMQ
     * Works with AMQP open standard
     * Works fine and scale well in containers
+    * In cloud scenarios, I probably would use a service like Azure Service Bus.
 
 ## Improvements
 
