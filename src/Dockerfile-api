@@ -1,6 +1,8 @@
 FROM microsoft/dotnet:2.1-sdk-alpine as build
 WORKDIR /src
 COPY . .
+# Workaround to remove the consumer application created in the same context of the api
+RUN rm -rf MyCompany.Consumer
 WORKDIR /src/MyCompany.Api
 RUN dotnet publish -c Release -o /dist
 

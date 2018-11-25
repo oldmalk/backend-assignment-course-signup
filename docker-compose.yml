@@ -2,7 +2,9 @@ version: '3.5'
 
 services:
   api:
-    build: ./src
+    build:
+      context: ./src
+      dockerfile: Dockerfile-api
     image: course-api:latest
     container_name: course-api
     restart: always
@@ -11,12 +13,13 @@ services:
     networks:
       - course-net
 
-  database:
-    image: mongo:latest
-    container_name: course-database
+  consumer:
+    build:
+      context: ./src
+      dockerfile: Dockerfile-consumer
+    image: course-consumer:latest
+    container_name: course-consumer
     restart: always
-    ports:
-      - 27017:27017
     networks:
       - course-net
 

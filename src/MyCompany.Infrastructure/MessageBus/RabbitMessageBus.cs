@@ -10,11 +10,13 @@ namespace MyCompany.Infrastructure.MessageBus
     public class RabbitMessageBus : IMessageBus
     {
         private readonly IModel _channel;
+        private const string EXCHANGE_NAME = "courses.topic";
+
         public RabbitMessageBus()
         {
             var connectionFactory = new ConnectionFactory
             {
-                HostName = "amqp://message-bus",
+                HostName = "message-bus",
                 UserName = "guest",
                 Password = "guest"
             };
@@ -27,6 +29,8 @@ namespace MyCompany.Infrastructure.MessageBus
         {
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
+            
+            CreateExchangeAndQueue(queueName);
 
             var eventConsumer = new EventingBasicConsumer(_channel);
             eventConsumer.Received += (sender, args) =>
@@ -45,10 +49,33 @@ namespace MyCompany.Infrastructure.MessageBus
             );
         }
 
+        private void CreateExchangeAndQueue(string queueName)
+        {
+            _channel.ExchangeDeclare(
+                exchange: EXCHANGE_NAME,
+                type: "topic",
+                durable: true,
+                autoDelete: false
+            );
+
+            _channel.QueueDeclare(
+                queue: queueName,
+                durable: true,
+                exclusive: false,
+                autoDelete: false
+            );
+
+            _channel.QueueBind(
+                queue: queueName,
+                exchange: EXCHANGE_NAME,
+                routingKey: queueName
+            );
+        }
+
         public void Publish(Message message)
         {
             _channel.BasicPublish(
-                exchange: "courses.topic",
+                exchange: EXCHANGE_NAME,
                 routingKey: message.Topic,
                 body: GetBytes(message));
         }

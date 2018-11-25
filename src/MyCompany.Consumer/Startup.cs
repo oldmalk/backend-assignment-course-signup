@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyCompany.Application.Courses;
+using MyCompany.Domain.Courses;
 using MyCompany.Infrastructure.MessageBus;
+using MyCompany.Infrastructure.MongoDb;
 
 namespace MyCompany.Consumer
 {
@@ -23,6 +25,7 @@ namespace MyCompany.Consumer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<ICourseRepository, MongoCourseRepository>();
             services.AddScoped<IMessageBus, RabbitMessageBus>();
         }
 
