@@ -8,4 +8,4 @@
 
 ## Proposed Design
 
-![](https://drive.google.com/open?id=1CJ-oekwEtzZ8-6RlWmdT8zbFgYjAgTUb)
+![](doc/architecture/design.png)
