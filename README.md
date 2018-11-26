@@ -50,6 +50,10 @@ It creates three containers:
 
 * The infrastructure project contains more then one concern, handling both persistence and messages. I would separate in to projects in two.
 
+* Move the configurations (RabbitMQ, database) to a file or, in some scenarios, to a configuration server.
+
+* Move the dependencies configuration to the application layer. This way, I prevent explicit references of the infrastructure component on top layers. 
+
 ## Proposed Design
 
 ![](doc/architecture/design.png)
