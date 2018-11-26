@@ -6,9 +6,9 @@ The docker-compose.yml file creates the structure to run the application.
 
 It creates three containers:
 
-* course-api: REST API capable of sign-up students to a course or publish messages to the message broker to do the sign-up asynchronously.
-* course-consumer: Service that listens the queue and do the sign-up asynchronously.
-* course-message-bus: Container of the RabbitMQ.
+* **course-api:** REST API capable of sign-up students to a course or publish messages to the message broker to do the sign-up asynchronously.
+* **course-consumer:** Service that listens the queue and do the sign-up asynchronously.
+* **course-message-bus:** Container of the RabbitMQ.
 
 ## Progress
 
@@ -32,6 +32,12 @@ It creates three containers:
     * Works with AMQP open standard
     * Works fine and scale well in containers
     * In cloud scenarios, I probably would use a service like Azure Service Bus.
+
+* Moq
+    * Provides an easy way to mock your dependencies and test the behavior.
+
+* FluentAssertions
+    * Make the tests assertions easier to read.
 
 ## Improvements
 
