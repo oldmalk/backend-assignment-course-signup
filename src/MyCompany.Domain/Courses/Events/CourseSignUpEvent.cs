@@ -1,4 +1,5 @@
 using System;
+using MyCompany.Domain.Events;
 
 namespace MyCompany.Domain.Courses.Events
 {

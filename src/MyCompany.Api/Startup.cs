@@ -11,7 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyCompany.Application.Courses;
+using MyCompany.Application.Events;
 using MyCompany.Domain.Courses;
+using MyCompany.Domain.Events;
 using MyCompany.Infrastructure.MessageBus;
 using MyCompany.Infrastructure.MongoDb;
 
@@ -34,6 +36,7 @@ namespace MyCompany.Api
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<ICourseRepository, MongoCourseRepository>();
             services.AddScoped<IMessageBus, RabbitMessageBus>();
+            services.AddScoped<IEventProcessor, EventProcessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

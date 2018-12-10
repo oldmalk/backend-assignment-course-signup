@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using Xunit;
 using Moq;
 using FluentAssertions;
-using MyCompany.Domain.Courses;
 using MyCompany.Application.Courses;
+using MyCompany.Domain.Courses;
+using MyCompany.Domain.Events;
 using MyCompany.Infrastructure.MessageBus;
 
 namespace MyCompany.Test.Application
@@ -14,11 +15,15 @@ namespace MyCompany.Test.Application
         private readonly MockRepository _mockRepository = new MockRepository(MockBehavior.Strict);
         private readonly Mock<ICourseRepository> _courseRepositoryMock;
         private readonly Mock<IMessageBus> _messageBusMock;
+        private readonly Mock<IEventProcessor> _eventProcessorMock;
+        private readonly CourseService _courseService;
 
         public CourseServiceTest()
         {
             _courseRepositoryMock = _mockRepository.Create<ICourseRepository>();
             _messageBusMock = _mockRepository.Create<IMessageBus>();
+            _eventProcessorMock = _mockRepository.Create<IEventProcessor>();
+            _courseService = new CourseService(_courseRepositoryMock.Object, _messageBusMock.Object, _eventProcessorMock.Object);
         }
 
         [Theory]
@@ -35,14 +40,11 @@ namespace MyCompany.Test.Application
                 .Setup(m => m.GetByIdAsync(courseStub.Id))
                 .ReturnsAsync(courseStub);
 
-            _courseRepositoryMock
-                .Setup(m => m.SaveAsync(It.Is<Course>(it => it.Id == courseStub.Id)))
-                .Returns(Task.CompletedTask);
-
-            var courseService = new CourseService(_courseRepositoryMock.Object, _messageBusMock.Object);
+            _eventProcessorMock
+                .Setup(m => m.Process(It.IsAny<DomainEvent>()));
 
             // Act
-            await courseService.SignUpAsync(courseStub.Id, studentDto);
+            await _courseService.SignUpAsync(courseStub.Id, studentDto);
 
             // Assert
             _mockRepository.VerifyAll();
@@ -60,11 +62,12 @@ namespace MyCompany.Test.Application
                 .Setup(m => m.GetByIdAsync(courseStub.Id))
                 .ReturnsAsync(courseStub);
 
-            var courseService = new CourseService(_courseRepositoryMock.Object, _messageBusMock.Object);
+            _eventProcessorMock
+                .Setup(m => m.Process(It.IsAny<DomainEvent>()));
 
             // Act
             await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                courseService.SignUpAsync(courseStub.Id, studentDto)
+                _courseService.SignUpAsync(courseStub.Id, studentDto)
             );
 
             // Assert
@@ -83,10 +86,8 @@ namespace MyCompany.Test.Application
                 .Setup(m => m.GetByIdAsync(courseStub.Id))
                 .ReturnsAsync(courseStub);
 
-            var courseService = new CourseService(_courseRepositoryMock.Object, _messageBusMock.Object);
-
             // Act
-            var actualCourse = await courseService.GetByIdAsync(courseId);
+            var actualCourse = await _courseService.GetByIdAsync(courseId);
 
             // Assert
             _mockRepository.VerifyAll();
@@ -103,7 +104,7 @@ namespace MyCompany.Test.Application
             _messageBusMock
                 .Setup(m => m.Publish(It.IsAny<Message>()));
 
-            var courseService = new CourseService(_courseRepositoryMock.Object, _messageBusMock.Object);
+            var courseService = new CourseService(_courseRepositoryMock.Object, _messageBusMock.Object, _eventProcessorMock.Object);
 
             // Act
             await courseService.EnqueueSignUpAsync(courseId, studentDto);

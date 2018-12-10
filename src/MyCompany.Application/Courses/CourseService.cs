@@ -1,6 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using MyCompany.Application.Events;
 using MyCompany.Domain.Courses;
+using MyCompany.Domain.Courses.Events;
+using MyCompany.Domain.Events;
 using MyCompany.Infrastructure.MessageBus;
 
 namespace MyCompany.Application.Courses
@@ -9,11 +12,13 @@ namespace MyCompany.Application.Courses
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IMessageBus _messageBus;
+        private readonly IEventProcessor _eventProcessor;
 
-        public CourseService(ICourseRepository courseRepository, IMessageBus messageBus)
+        public CourseService(ICourseRepository courseRepository, IMessageBus messageBus, IEventProcessor eventProcessor)
         {
             _courseRepository = courseRepository;
             _messageBus = messageBus;
+            _eventProcessor = eventProcessor;
         }
 
         public Task EnqueueSignUpAsync(Guid courseId, StudentDto studentDto)
@@ -38,9 +43,8 @@ namespace MyCompany.Application.Courses
                 Age = studentDto.Age
             };
 
-            course.SignUp(student);
-
-            await _courseRepository.SaveAsync(course);
+            var courseSignUpEvent = new CourseSignUpEvent(course, student, DateTime.Now);
+            _eventProcessor.Process(courseSignUpEvent);
         }
     }
 }
