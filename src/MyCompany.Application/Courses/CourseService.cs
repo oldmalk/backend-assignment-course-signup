@@ -44,7 +44,7 @@ namespace MyCompany.Application.Courses
             };
 
             var courseSignUpEvent = new CourseSignUpEvent(course, student, DateTime.Now);
-            _eventProcessor.Process(courseSignUpEvent);
+            await _eventProcessor.Process(courseSignUpEvent);
         }
     }
 }

@@ -41,7 +41,8 @@ namespace MyCompany.Test.Application
                 .ReturnsAsync(courseStub);
 
             _eventProcessorMock
-                .Setup(m => m.Process(It.IsAny<DomainEvent>()));
+                .Setup(m => m.Process(It.IsAny<DomainEvent>()))
+                .Returns(Task.CompletedTask);
 
             // Act
             await _courseService.SignUpAsync(courseStub.Id, studentDto);
@@ -63,7 +64,8 @@ namespace MyCompany.Test.Application
                 .ReturnsAsync(courseStub);
 
             _eventProcessorMock
-                .Setup(m => m.Process(It.IsAny<DomainEvent>()));
+                .Setup(m => m.Process(It.IsAny<DomainEvent>()))
+                .Returns(Task.CompletedTask);
 
             // Act
             await Assert.ThrowsAsync<InvalidOperationException>(() =>

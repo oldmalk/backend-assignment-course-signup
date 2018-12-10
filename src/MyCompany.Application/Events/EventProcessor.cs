@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using MyCompany.Domain.Events;
 
 namespace MyCompany.Application.Events
@@ -7,9 +8,9 @@ namespace MyCompany.Application.Events
     {
         private readonly IList<DomainEvent> _eventLog = new List<DomainEvent>();
 
-        public void Process(DomainEvent domainEvent)
+        public async Task Process(DomainEvent domainEvent)
         {
-            domainEvent.Process();
+             await Task.Run(() => domainEvent.Process());
             _eventLog.Add(domainEvent);
         }
     }

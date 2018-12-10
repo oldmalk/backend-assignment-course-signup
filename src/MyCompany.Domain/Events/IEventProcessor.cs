@@ -1,9 +1,10 @@
+using System.Threading.Tasks;
 using MyCompany.Domain;
 
 namespace MyCompany.Domain.Events
 {
     public interface IEventProcessor
     {
-         void Process(DomainEvent domainEvent);
+         Task Process(DomainEvent domainEvent);
     }
 }
