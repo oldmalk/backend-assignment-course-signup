@@ -27,7 +27,7 @@ namespace MyCompany.Infrastructure.MongoDb
 
         public Task SaveAsync(Course course)
         {
-            Console.WriteLine($"Course with ID {course.Id} was saved.");
+            Console.WriteLine($"*** Course with ID {course.Id} was saved and has {course.Students.Count()} students. ***");
 
             return Task.CompletedTask;
         }
