@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyCompany.Application;
 using MyCompany.Application.Courses;
-using MyCompany.Domain.Courses;
 using MyCompany.Infrastructure.MessageBus;
-using MyCompany.Infrastructure.MongoDb;
 
 namespace MyCompany.Consumer
 {
@@ -24,9 +23,7 @@ namespace MyCompany.Consumer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ICourseService, CourseService>();
-            services.AddScoped<ICourseRepository, MongoCourseRepository>();
-            services.AddScoped<IMessageBus, RabbitMessageBus>();
+            services.AddMyCompany();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

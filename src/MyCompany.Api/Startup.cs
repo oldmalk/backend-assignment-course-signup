@@ -10,10 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MyCompany.Application.Courses;
-using MyCompany.Domain.Courses;
-using MyCompany.Infrastructure.MessageBus;
-using MyCompany.Infrastructure.MongoDb;
+using MyCompany.Application;
 
 namespace MyCompany.Api
 {
@@ -31,9 +28,7 @@ namespace MyCompany.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             
-            services.AddScoped<ICourseService, CourseService>();
-            services.AddScoped<ICourseRepository, MongoCourseRepository>();
-            services.AddScoped<IMessageBus, RabbitMessageBus>();
+            services.AddMyCompany();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
